@@ -16,6 +16,8 @@ cmake_minimum_required(VERSION 3.1.3)
 project(EYL_DESKTOP C)
 
 find_package(PkgConfig REQUIRED)
+pkg_check_modules(WAYLAND_SERVER REQUIRED wayland-server)
+pkg_check_modules(WESTON REQUIRED libweston-1)
 pkg_check_modules(WESTON_DESKTOP REQUIRED libweston-desktop-1)
 
 set(CMAKE_C_STANDARD 11)
@@ -25,12 +27,22 @@ add_compile_options(-Wpedantic)
 add_compile_options(-Wall)
 add_compile_options(-Wextra)
 
-include_directories(${WESTON_DESKTOP_INCLUDE_DIRS})
-link_directories(${WESTON_DESKTOP_LIBRARY_DIRS})
+include_directories(
+	${WAYLAND_SERVER_INCLUDE_DIRS}
+	${WESTON_INCLUDE_DIRS}
+	${WESTON_DESKTOP_INCLUDE_DIRS}
+)
+link_directories(
+	${WAYLAND_SERVER_LIBRARY_DIRS}
+	${WESTON_LIBRARY_DIRS}
+	${WESTON_DESKTOP_LIBRARY_DIRS}
+)
 
 add_executable(eyl-desktop
 	main.c
 )
 target_link_libraries(eyl-desktop
+	${WAYLAND_SERVER_LIBRARIES}
+	${WESTON_LIBRARIES}
 	${WESTON_DESKTOP_LIBRARIES}
 )

@@ -46,6 +46,7 @@ static bool resources_allocate(struct wl_display **wl_display,
 	}
 
 	struct weston_desktop_api weston_desktop_api = {
+		.struct_size = sizeof(struct weston_desktop_api),
 		.surface_added = surface_added,
 		.surface_removed = surface_removed,
 	};

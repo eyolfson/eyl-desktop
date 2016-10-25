@@ -84,8 +84,8 @@ int main()
 	struct weston_desktop *weston_desktop;
 
 	if (!resource_allocation(&wl_display,
-	                        &weston_compositor,
-	                        &weston_desktop)) {
+	                         &weston_compositor,
+	                         &weston_desktop)) {
 		return 1;
 	}
 

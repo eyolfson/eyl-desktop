@@ -30,19 +30,18 @@ static void surface_removed(struct weston_desktop_surface *surface,
 {
 }
 
-static bool resources_allocate(struct wl_display **wl_display,
-                               struct weston_compositor **weston_compositor,
-                               struct weston_desktop **weston_desktop)
+static bool resource_allocation(struct wl_display **wl_display,
+                                struct weston_compositor **weston_compositor,
+                                struct weston_desktop **weston_desktop)
 {
 	*wl_display = wl_display_create();
 	if (*wl_display == NULL) {
-		return false;
+		goto display_fail;
 	}
 
 	*weston_compositor = weston_compositor_create(*wl_display, NULL);
 	if (*weston_compositor == NULL) {
-		wl_display_destroy(*wl_display);
-		return false;
+		goto compositor_fail;
 	}
 
 	struct weston_desktop_api weston_desktop_api = {
@@ -54,17 +53,22 @@ static bool resources_allocate(struct wl_display **wl_display,
 	                                        &weston_desktop_api,
 	                                        NULL);
 	if (*weston_desktop == NULL) {
-		weston_compositor_destroy(*weston_compositor);
-		wl_display_destroy(*wl_display);
-		return false;
+		goto desktop_fail;
 	}
 
 	return true;
+
+desktop_fail:
+	weston_compositor_destroy(*weston_compositor);
+compositor_fail:
+	wl_display_destroy(*wl_display);
+display_fail:
+	return false;
 }
 
-static void resources_deallocate(struct wl_display *wl_display,
-                                 struct weston_compositor *weston_compositor,
-                                 struct weston_desktop *weston_desktop)
+static void resource_deallocation(struct wl_display *wl_display,
+                                  struct weston_compositor *weston_compositor,
+                                  struct weston_desktop *weston_desktop)
 {
 	weston_desktop_destroy(weston_desktop);
 	weston_compositor_destroy(weston_compositor);
@@ -79,12 +83,12 @@ int main()
 	struct weston_compositor *weston_compositor;
 	struct weston_desktop *weston_desktop;
 
-	if (!resources_allocate(&wl_display,
+	if (!resource_allocation(&wl_display,
 	                        &weston_compositor,
 	                        &weston_desktop)) {
 		return 1;
 	}
 
-	resources_deallocate(wl_display, weston_compositor, weston_desktop);
+	resource_deallocation(wl_display, weston_compositor, weston_desktop);
 	return 0;
 }

@@ -23,11 +23,15 @@
 static void surface_added(struct weston_desktop_surface *surface,
                           void *user_data)
 {
+	(void) surface;
+	(void) user_data;
 }
 
 static void surface_removed(struct weston_desktop_surface *surface,
                             void *user_data)
 {
+	(void) surface;
+	(void) user_data;
 }
 
 static bool resource_allocation(struct wl_display **wl_display,

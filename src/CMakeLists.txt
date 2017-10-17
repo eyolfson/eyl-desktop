@@ -17,8 +17,8 @@ project(EYL_DESKTOP C)
 
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(WAYLAND_SERVER REQUIRED wayland-server)
-pkg_check_modules(WESTON REQUIRED libweston-1)
-pkg_check_modules(WESTON_DESKTOP REQUIRED libweston-desktop-1)
+pkg_check_modules(WESTON REQUIRED libweston-3)
+pkg_check_modules(WESTON_DESKTOP REQUIRED libweston-desktop-3)
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
